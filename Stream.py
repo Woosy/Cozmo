@@ -13,9 +13,14 @@ class TwitterStreamListener(tweepy.StreamListener):
 	# Liste des codes d'erreur Twitter : https://dev.twitter.com/overview/api/response-codes
 	def on_error(self, status_code):
 		if status_code == 403:
-			print("La requête a bien abouti, mais a été refusée ou l'accès n'est pas autorisé.")
+			print("403 - Forbidden")
 			return False
-
+		if status_code == 404:
+			print("404 Not Found !")
+			return False
+		if status_code == 429:
+			print("Too Many Requests")
+			return False
 
 
 def get_tweet(tweet):
