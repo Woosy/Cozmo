@@ -3,6 +3,7 @@ import socket
 import requests
 import time
 import Login
+import MyCozmo
 
 
 class TwitterStreamListener(tweepy.StreamListener):
@@ -37,8 +38,13 @@ def get_tweet(tweet):
                 print("Cozmo va dire : ")
                 messageSplitted.remove("@TestBot96875418")
                 messageSplitted.remove("say")
-                temp = " ".join(messageSplitted)
-                print(temp)
+                textToSay = " ".join(messageSplitted)
+                MyCozmo.getTextToSay(textToSay)
+	if (messageSplitted[1] == "drive"):
+				print("Drive")
+				MyCozmo.cozmo_drive()
+
+
 
 
 
