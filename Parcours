@@ -1,0 +1,42 @@
+
+
+import asyncio
+import time
+import sys
+
+import cozmo
+from cozmo.util import degrees, distance_mm, speed_mmps
+
+import asyncio
+
+import cozmo
+from cozmo.util import degrees, distance_mm, speed_mmps
+
+
+def go_to_object_test(robot: cozmo.robot.Robot):
+    # look around and try to find a cube
+    cube = None
+
+    try:
+        cube = robot.world.wait_for_observed_light_cube(timeout=30)
+        print("Found cube: %s" % cube)
+    except asyncio.TimeoutError:
+        print("Didn't find a cube")
+
+    if cube:
+        # Drive to 70mm away from the cube (much closer and Cozmo
+        # will likely hit the cube) and then stop.
+        action = robot.go_to_object(cube, distance_mm(70.0))
+        action.wait_for_completed()
+        robot.turn_in_place(degrees(90)).wait_for_completed()
+        robot.drive_straight(distance_mm(75), speed_mmps(100)).wait_for_completed()
+        robot.turn_in_place(degrees(-90)).wait_for_completed()
+        robot.drive_straight(distance_mm(170), speed_mmps(100)).wait_for_completed()
+        robot.turn_in_place(degrees(-90)).wait_for_completed()
+        robot.drive_straight(distance_mm(75), speed_mmps(100)).wait_for_completed()
+        robot.turn_in_place(degrees(90)).wait_for_completed()
+        print("Completed action: result = %s" % action)
+        print("Done.")
+
+
+cozmo.run_program(go_to_object_test)
